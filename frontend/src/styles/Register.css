@@ -1,0 +1,75 @@
+/* Main container */
+.register-container {
+  background: #000;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Card */
+.register-card {
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  width: 350px;
+  box-shadow: 0 0 20px rgba(232, 63, 66, 0.3);
+  color: #fff;
+}
+
+.register-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #E83F42;
+}
+
+/* Form layout */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Inputs */
+.register-input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #222;
+  color: #fff;
+  font-size: 15px;
+}
+
+/* Register button */
+.register-button {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: #E83F42;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Error message */
+.register-error {
+  background: #330000;
+  padding: 10px;
+  border-radius: 6px;
+  color: red;
+  margin-bottom: 10px;
+}
+
+/* Footer text */
+.register-footer {
+  margin-top: 15px;
+  text-align: center;
+  color: #aaa;
+}
+
+.register-link {
+  color: #E83F42;
+  text-decoration: none;
+}
