@@ -15,12 +15,11 @@ const Register = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Update inputs
+  // Update input fields
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Submit registration
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
@@ -36,8 +35,9 @@ const Register = () => {
 
       const uid = res.user.uid;
 
-      // Save user in Firestore
+      // Save user in Firestore (IMPORTANT: save firebaseUid)
       await setDoc(doc(db, "users", uid), {
+        firebaseUid: uid,   // 🔥 REQUIRED FOR LOGIN
         name: form.name,
         email: form.email,
         phone: form.phone,
@@ -47,7 +47,7 @@ const Register = () => {
       });
 
       alert("Registration Successful!");
-      window.location.href = "/login";
+      window.location.href = "/";
 
     } catch (err) {
       setError(err.message);
