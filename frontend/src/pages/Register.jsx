@@ -15,7 +15,6 @@ const Register = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Update input fields
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -26,7 +25,6 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // Create user in Firebase Auth
       const res = await createUserWithEmailAndPassword(
         auth,
         form.email,
@@ -35,9 +33,8 @@ const Register = () => {
 
       const uid = res.user.uid;
 
-      // Save user in Firestore (IMPORTANT: save firebaseUid)
       await setDoc(doc(db, "users", uid), {
-        firebaseUid: uid,   // 🔥 REQUIRED FOR LOGIN
+        firebaseUid: uid,
         name: form.name,
         email: form.email,
         phone: form.phone,
@@ -58,57 +55,69 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <div className="register-card">
-        <h2 className="register-title">Create Account</h2>
+      {/* Left Side - Brand Only */}
+      <div className="register-left">
+        <h1 className="brand-title">Snack Loader</h1>
+      </div>
 
-        {error && <p className="register-error">{error}</p>}
+      {/* Right Side - Floating Register Card */}
+      <div className="register-right">
+        <div className="register-card">
+          <h2 className="register-title">Create Account</h2>
 
-        <form onSubmit={handleRegister} className="register-form">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={handleChange}
-            className="register-input"
-          />
+          {error && <p className="register-error">{error}</p>}
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={form.email}
-            onChange={handleChange}
-            className="register-input"
-          />
+          <form onSubmit={handleRegister} className="register-form">
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={handleChange}
+              className="register-input"
+              required
+            />
 
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone Number"
-            value={form.phone}
-            onChange={handleChange}
-            className="register-input"
-          />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              className="register-input"
+              required
+            />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="register-input"
-          />
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              value={form.phone}
+              onChange={handleChange}
+              className="register-input"
+              required
+            />
 
-          <button type="submit" className="register-button">
-            {loading ? "Creating Account..." : "Sign Up"}
-          </button>
-        </form>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              className="register-input"
+              required
+            />
 
-        <p className="register-footer">
-          Already have an account?{" "}
-          <a href="/login" className="register-link">Login</a>
-        </p>
+            <button type="submit" className="register-button" disabled={loading}>
+              {loading ? "Creating Account..." : "Sign Up"}
+            </button>
+          </form>
+
+          <p className="register-footer">
+            Already have an account?{" "}
+            <a href="/login" className="register-link">Login here</a>
+          </p>
+        </div>
       </div>
     </div>
   );

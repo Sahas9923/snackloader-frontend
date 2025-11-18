@@ -1,75 +1,156 @@
-/* Main container */
 .register-container {
-  background: #000;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+              url('../assets/pet-accessories-dry-food.jpg') center/cover no-repeat;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px;
 }
 
-/* Card */
+.register-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.brand-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+}
+
+.register-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  width: 45%;
+}
+
 .register-card {
-  background: #111;
-  padding: 30px;
-  border-radius: 12px;
-  width: 350px;
-  box-shadow: 0 0 20px rgba(232, 63, 66, 0.3);
-  color: #fff;
+  background: white;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .register-title {
   text-align: center;
-  margin-bottom: 20px;
-  color: #E83F42;
+  margin-bottom: 40px;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
 }
 
-/* Form layout */
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
-/* Inputs */
 .register-input {
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #333;
-  background: #222;
-  color: #fff;
+  padding: 16px 20px;
+  border: 2px solid #e8e8e8;
+  border-radius: 10px;
   font-size: 15px;
+  background: white;
+  transition: all 0.3s ease;
 }
 
-/* Register button */
+.register-input:focus {
+  outline: none;
+  border-color: #007bff;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
 .register-button {
-  padding: 12px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 16px;
   border: none;
-  border-radius: 6px;
-  background: #E83F42;
-  color: #fff;
+  border-radius: 10px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
 }
 
-/* Error message */
+.register-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.register-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .register-error {
-  background: #330000;
-  padding: 10px;
-  border-radius: 6px;
-  color: red;
-  margin-bottom: 10px;
+  background: #fee;
+  color: #c33;
+  padding: 14px 16px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid #fdd;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* Footer text */
 .register-footer {
-  margin-top: 15px;
   text-align: center;
-  color: #aaa;
+  margin-top: 30px;
+  color: #666;
+  font-size: 14px;
 }
 
 .register-link {
-  color: #E83F42;
+  color: #007bff;
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .register-left {
+    padding: 60px 20px 20px 20px;
+  }
+  
+  .brand-title {
+    font-size: 3rem;
+    text-align: center;
+  }
+  
+  .register-right {
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .register-card {
+    padding: 40px 30px;
+    max-width: 100%;
+  }
 }

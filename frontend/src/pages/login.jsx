@@ -17,14 +17,12 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔥 LOGIN FUNCTION
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // Step 1: Firebase Auth
       const res = await signInWithEmailAndPassword(
         auth,
         form.email,
@@ -32,8 +30,6 @@ const Login = () => {
       );
 
       const firebaseUid = res.user.uid;
-
-      // Step 2: Find Firestore user by firebaseUid
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("firebaseUid", "==", firebaseUid));
       const snapshot = await getDocs(q);
@@ -44,14 +40,9 @@ const Login = () => {
         return;
       }
 
-      // Get the user data
       const userData = snapshot.docs[0].data();
-      const userId = userData.userId;
-
-      // Save user data to localStorage (optional)
       localStorage.setItem("user", JSON.stringify(userData));
 
-      // Redirect
       alert("Login successful!");
       window.location.href = "/dashboard";
 
@@ -70,39 +61,49 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-card">
-        <h2 className="login-title">Login</h2>
+      {/* Left Side - Brand Only */}
+      <div className="login-left">
+        <h1 className="brand-title">Snack Loader</h1>
+      </div>
 
-        {error && <p className="login-error">{error}</p>}
+      {/* Right Side - Floating Login Card */}
+      <div className="login-right">
+        <div className="login-card">
+          <h2 className="login-title">Login</h2>
 
-        <form onSubmit={handleLogin} className="login-form">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={form.email}
-            onChange={handleChange}
-            className="login-input"
-          />
+          {error && <p className="login-error">{error}</p>}
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="login-input"
-          />
+          <form onSubmit={handleLogin} className="login-form">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              className="login-input"
+              required
+            />
 
-          <button type="submit" className="login-button" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              className="login-input"
+              required
+            />
 
-        <p className="login-footer">
-          Don’t have an account?{" "}
-          <a href="/register" className="login-link">Create one</a>
-        </p>
+            <button type="submit" className="login-button" disabled={loading}>
+              {loading ? "Logging in..." : "Login to Dashboard"}
+            </button>
+          </form>
+
+          <p className="login-footer">
+            Don't have an account?{" "}
+            <a href="/register" className="login-link">Create one here</a>
+          </p>
+        </div>
       </div>
     </div>
   );
