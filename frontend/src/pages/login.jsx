@@ -43,7 +43,6 @@ const Login = () => {
       const userData = snapshot.docs[0].data();
       localStorage.setItem("user", JSON.stringify(userData));
 
-      alert("Login successful!");
       window.location.href = "/dashboard";
 
     } catch (err) {
@@ -63,46 +62,78 @@ const Login = () => {
     <div className="login-container">
       {/* Left Side - Brand Only */}
       <div className="login-left">
-        <h1 className="brand-title">Snack Loader</h1>
+        <div className="brand-section">
+          <h1 className="brand-title">SnackLoader</h1>
+          <p className="brand-subtitle">Automatic Pet Feeder</p>
+          <div className="brand-features">
+            <div className="feature">
+              <span className="feature-icon">🐾</span>
+              <span>Smart Feeding</span>
+            </div>
+            <div className="feature">
+              <span className="feature-icon">📱</span>
+              <span>Remote Control</span>
+            </div>
+            <div className="feature">
+              <span className="feature-icon">🌡️</span>
+              <span>Environment Monitoring</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Right Side - Floating Login Card */}
       <div className="login-right">
         <div className="login-card">
-          <h2 className="login-title">Login</h2>
+          <div className="card-header">
+            <h2 className="login-title">Welcome Back</h2>
+            <p className="login-subtitle">Sign in to your account</p>
+          </div>
 
-          {error && <p className="login-error">{error}</p>}
+          {error && <div className="login-error">{error}</div>}
 
           <form onSubmit={handleLogin} className="login-form">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={form.email}
-              onChange={handleChange}
-              className="login-input"
-              required
-            />
+            <div className="input-group">
+              <label className="input-label">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                className="login-input"
+                required
+              />
+            </div>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              className="login-input"
-              required
-            />
+            <div className="input-group">
+              <label className="input-label">Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={handleChange}
+                className="login-input"
+                required
+              />
+            </div>
 
             <button type="submit" className="login-button" disabled={loading}>
-              {loading ? "Logging in..." : "Login to Dashboard"}
+              {loading ? (
+                <>
+                  <div className="button-spinner"></div>
+                  Signing In...
+                </>
+              ) : (
+                "Sign In to Dashboard"
+              )}
             </button>
           </form>
 
-          <p className="login-footer">
-            Don't have an account?{" "}
-            <a href="/register" className="login-link">Create one here</a>
-          </p>
+          <div className="login-footer">
+            <p>Don't have an account? <a href="/register" className="login-link">Create one here</a></p>
+          </div>
         </div>
       </div>
     </div>
