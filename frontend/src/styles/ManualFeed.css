@@ -2,120 +2,391 @@
   min-height: 100vh;
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
               url('../assets/top-view-pet-accessories-food.jpg') center/cover no-repeat;
-  padding: 40px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navigation Bar */
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0 30px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  height: 70px;
+}
+
+.nav-brand h2 {
+  color: #1a202c;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav-brand span {
+  color: #718096;
+  font-size: 0.8rem;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: #4a5568;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #007bff;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #007bff;
+  border-radius: 2px;
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-email {
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.logout-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c53030;
+}
+
+/* Main Content */
+.feed-content {
+  padding: 30px;
+}
+
+.feed-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-content h1 {
+  color: #1a202c;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.header-content p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Feed Grid */
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
 .feed-card {
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(15px);
-  padding: 50px 40px;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 500px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.feed-card h2 {
-  text-align: center;
-  margin-bottom: 40px;
-  color: #1a202c;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.pet-feed-section {
-  background: rgba(248, 250, 252, 0.8);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   padding: 30px;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  border-left: 4px solid #007bff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: transform 0.2s ease;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
 }
 
-.pet-feed-section:hover {
-  transform: translateY(-2px);
+.feed-card:hover {
+  transform: translateY(-5px);
 }
 
-.pet-feed-section h3 {
-  color: #2d3748;
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 20px;
+.cat-card {
+  border-left: 4px solid #ed8936;
+}
+
+.dog-card {
+  border-left: 4px solid #3182ce;
+}
+
+.card-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
+.pet-avatar {
+  font-size: 3rem;
+  width: 80px;
+  height: 80px;
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.pet-info h3 {
+  color: #1a202c;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.pet-info p {
+  color: #718096;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Feed Controls */
 .feed-controls {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.amount-control {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
-  align-items: end;
+}
+
+.amount-label {
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .feed-input {
-  padding: 14px 16px;
-  border: 2px solid rgba(232, 232, 232, 0.8);
-  border-radius: 8px;
-  font-size: 15px;
-  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: white;
   transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  text-align: center;
 }
 
 .feed-input:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-  background: white;
 }
 
-.feed-button {
-  background: linear-gradient(135deg, #48bb78, #38a169);
-  color: white;
-  padding: 14px 25px;
-  border: none;
+.amount-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.amount-btn {
+  padding: 10px 15px;
+  border: 2px solid #e2e8f0;
+  background: white;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  white-space: nowrap;
-  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.feed-button:hover {
+.amount-btn:hover {
+  border-color: #007bff;
+  background: rgba(0, 123, 255, 0.05);
+}
+
+/* Feed Buttons */
+.feed-button {
+  padding: 18px 30px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.feed-button:not(:disabled):hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.feed-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .feed-button.cat {
   background: linear-gradient(135deg, #ed8936, #dd6b20);
+  color: white;
   box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
 }
 
-.feed-button.cat:hover {
-  box-shadow: 0 6px 20px rgba(237, 137, 54, 0.4);
+.feed-button.cat:not(:disabled):hover {
+  box-shadow: 0 8px 25px rgba(237, 137, 54, 0.4);
 }
 
+.feed-button.dog {
+  background: linear-gradient(135deg, #3182ce, #2c5aa0);
+  color: white;
+  box-shadow: 0 4px 15px rgba(49, 130, 206, 0.3);
+}
+
+.feed-button.dog:not(:disabled):hover {
+  box-shadow: 0 8px 25px rgba(49, 130, 206, 0.4);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Quick Tips */
+.quick-tips {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quick-tips h3 {
+  color: #1a202c;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.tip-card {
+  background: rgba(248, 250, 252, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #48bb78;
+}
+
+.tip-card h4 {
+  color: #2d3748;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.tip-card p {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .manual-feed-container {
-    padding: 20px;
+  .feed-content {
+    padding: 15px;
   }
   
-  .feed-card {
-    padding: 40px 30px;
+  .navbar {
+    padding: 0 15px;
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
   }
   
-  .feed-controls {
+  .nav-links {
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .nav-user {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .feed-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .amount-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .tips-grid {
     grid-template-columns: 1fr;
   }
 }
