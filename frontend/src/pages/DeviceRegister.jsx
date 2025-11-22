@@ -1,33 +1,38 @@
-// DeviceRegister.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "../services/firebase";
 
-export default function DeviceRegister() {
-  const [deviceId, setDeviceId] = useState("");
+export default function DeviceStatus() {
+  const [device, setDevice] = useState(null);
 
-  const register = async () => {
+  useEffect(() => { load(); }, []);
+
+  async function load() {
     const token = await auth.currentUser.getIdToken();
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/device/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        deviceId,
-        ownerId: auth.currentUser.uid,
-        ownerEmail: auth.currentUser.email
-      })
+    const r = await fetch(`${process.env.REACT_APP_BACKEND_URL}/device/status`, {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    const data = await res.json();
-    alert(JSON.stringify(data));
-  };
+    setDevice(await r.json());
+  }
+
+  if (!device) return <div>Loading...</div>;
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Register Device</h2>
-      <input placeholder="Device ID (e.g. SNACK-01)" value={deviceId} onChange={e => setDeviceId(e.target.value)} />
-      <button onClick={register}>Register Device</button>
+      <h2>Device Status</h2>
+      <div>Online: {device.online ? "Yes" : "No"}</div>
+      <div>Last seen: 
+         {device.lastSeen 
+           ? new Date(device.lastSeen.seconds * 1000).toLocaleString() 
+           : "N/A"}
+      </div>
+
+      <h3>Cat</h3>
+      <div>Lid: {device.cat?.lidState}</div>
+      <div>FeedingActive: {String(device.cat?.feedingActive)}</div>
+
+      <h3>Dog</h3>
+      <div>Lid: {device.dog?.lidState}</div>
+      <div>FeedingActive: {String(device.dog?.feedingActive)}</div>
     </div>
   );
 }
