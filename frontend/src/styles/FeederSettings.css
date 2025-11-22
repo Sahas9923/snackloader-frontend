@@ -1,0 +1,421 @@
+.feeder-settings-container {
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+              url('../assets/top-view-bowls-set-with-pet-accessories-still-life-concept.jpg') center/cover no-repeat;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navigation Bar */
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  height: 70px;
+}
+
+.nav-brand h2 {
+  color: #1a202c;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav-brand span {
+  color: #718096;
+  font-size: 0.8rem;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: #4a5568;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #007bff;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #007bff;
+  border-radius: 2px;
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-email {
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.logout-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c53030;
+}
+
+/* Main Content */
+.settings-content {
+  padding: 30px;
+}
+
+.settings-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  color: #1a202c;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.header-content p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.save-settings-btn {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.save-settings-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+/* Settings Grid */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+}
+
+.settings-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.settings-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.pet-icon {
+  font-size: 2rem;
+}
+
+.card-header h3 {
+  color: #1a202c;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Schedule List */
+.schedule-list {
+  margin-bottom: 25px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.empty-schedule {
+  text-align: center;
+  padding: 40px 20px;
+  color: #a0aec0;
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 8px;
+  border: 2px dashed #e2e8f0;
+}
+
+.schedule-item {
+  background: rgba(248, 250, 252, 0.8);
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid #007bff;
+  transition: all 0.3s ease;
+}
+
+.schedule-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateX(5px);
+}
+
+.schedule-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.schedule-time {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1.1rem;
+}
+
+.schedule-amount {
+  color: #007bff;
+  font-weight: 700;
+  background: rgba(0, 123, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.remove-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+  background: #c53030;
+  transform: scale(1.1);
+}
+
+/* Schedule Inputs */
+.schedule-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.schedule-input {
+  padding: 12px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.schedule-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.add-schedule-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.add-schedule-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.add-schedule-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Toggle Card */
+.toggle-card {
+  grid-column: 1 / -1;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.toggle-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.toggle-label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-checkbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggle-checkbox:checked + .toggle-slider {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+.toggle-checkbox:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-info h4 {
+  color: #1a202c;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.toggle-info p {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .settings-content {
+    padding: 15px;
+  }
+  
+  .navbar {
+    padding: 0 15px;
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+  
+  .nav-links {
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .nav-user {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .settings-header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .schedule-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .schedule-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

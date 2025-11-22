@@ -43,7 +43,6 @@ const Login = () => {
       const userData = snapshot.docs[0].data();
       localStorage.setItem("user", JSON.stringify(userData));
 
-      alert("Login successful!");
       window.location.href = "/dashboard";
 
     } catch (err) {
@@ -61,48 +60,120 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left Side - Brand Only */}
-      <div className="login-left">
-        <h1 className="brand-title">Snack Loader</h1>
-      </div>
+      <div className="login-content">
+        {/* Form Side */}
+        <div className="login-form-section">
+          <div className="login-card">
+            <div className="logo-section">
+              <div className="logo">
+                <span className="logo-icon">🐾</span>
+                <h1 className="brand-title">SnackLoader</h1>
+              </div>
+              <p className="welcome-text">Welcome back to your pet feeder</p>
+            </div>
 
-      {/* Right Side - Floating Login Card */}
-      <div className="login-right">
-        <div className="login-card">
-          <h2 className="login-title">Login</h2>
+            {error && (
+              <div className="error-message">
+                <span className="error-icon">⚠️</span>
+                {error}
+              </div>
+            )}
 
-          {error && <p className="login-error">{error}</p>}
+            <form onSubmit={handleLogin} className="login-form">
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                />
+              </div>
 
-          <form onSubmit={handleLogin} className="login-form">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={form.email}
-              onChange={handleChange}
-              className="login-input"
-              required
-            />
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                />
+              </div>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              className="login-input"
-              required
-            />
+              <button 
+                type="submit" 
+                className="login-button" 
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <div className="button-spinner"></div>
+                    Signing In...
+                  </>
+                ) : (
+                  "Sign In to Dashboard"
+                )}
+              </button>
+            </form>
 
-            <button type="submit" className="login-button" disabled={loading}>
-              {loading ? "Logging in..." : "Login to Dashboard"}
-            </button>
-          </form>
+            <div className="login-footer">
+              <p>
+                Don't have an account?{" "}
+                <a href="/register" className="auth-link">
+                  Create one here
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
 
-          <p className="login-footer">
-            Don't have an account?{" "}
-            <a href="/register" className="login-link">Create one here</a>
-          </p>
+        {/* Info Side */}
+        <div className="login-info-section">
+          <div className="info-content">
+            <h2>Smart Pet Feeding Made Simple</h2>
+            <div className="features-list">
+              <div className="feature">
+                <span className="feature-icon">⏰</span>
+                <div className="feature-text">
+                  <h4>Automated Scheduling</h4>
+                  <p>Set perfect feeding times for your pets</p>
+                </div>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">📱</span>
+                <div className="feature-text">
+                  <h4>Remote Control</h4>
+                  <p>Feed your pets from anywhere</p>
+                </div>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">🌡️</span>
+                <div className="feature-text">
+                  <h4>Environment Monitoring</h4>
+                  <p>Track temperature and humidity</p>
+                </div>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">📊</span>
+                <div className="feature-text">
+                  <h4>Smart Analytics</h4>
+                  <p>Monitor your pet's feeding patterns</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

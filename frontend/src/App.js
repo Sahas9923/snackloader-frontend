@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import DeviceRegister from "./pages/DeviceRegister";
 import Dashboard from "./pages/Dashboard";
 import DeviceStatus from "./pages/DeviceStatus";
@@ -13,7 +13,7 @@ function App() {
       <Routes>
         {/* Registration page */}
         <Route path="/" element={<Login />} />
-        <Route path="/Register" element ={<Register/>} />
+        <Route path="/register" element ={<Register/>} />
         <Route path="/dashboard" element ={<Dashboard/>} />
         <Route path="/deviceRegister" element ={<DeviceRegister/>}/>
         <Route path="/deviceStatus" element ={<DeviceStatus/>}/>
