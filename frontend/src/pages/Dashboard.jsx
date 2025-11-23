@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, rtdb } from "../services/firebase"; // Import rtdb instead of db
+import { auth, rtdb } from "../services/firebase";
 import { signOut } from "firebase/auth";
 import { ref, onValue, off } from "firebase/database";
 import "../styles/Dashboard.css";
@@ -11,6 +11,33 @@ export default function Dashboard() {
     humidity: null,
     timestamp: null
   });
+
+  const [petDetection, setPetDetection] = useState({
+    cat: {
+      detected: null,
+      confidence: null,
+      timestamp: null
+    },
+    dog: {
+      detected: null,
+      confidence: null,
+      timestamp: null
+    }
+  });
+
+  const [bowlWeight, setBowlWeight] = useState({
+    cat: {
+      weight: null,
+      unit: null,
+      timestamp: null
+    },
+    dog: {
+      weight: null,
+      unit: null,
+      timestamp: null
+    }
+  });
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -20,9 +47,26 @@ export default function Dashboard() {
     const humidityRef = ref(rtdb, 'temperature/humidity');
     const timestampRef = ref(rtdb, 'temperature/timestamp');
 
+    // Pet detection listeners
+    const catDetectedRef = ref(rtdb, 'detectionStatus/cat/detected');
+    const catConfidenceRef = ref(rtdb, 'detectionStatus/cat/confidence');
+    const catDetectionTimestampRef = ref(rtdb, 'detectionStatus/cat/timestamp');
+    
+    const dogDetectedRef = ref(rtdb, 'detectionStatus/dog/detected');
+    const dogConfidenceRef = ref(rtdb, 'detectionStatus/dog/confidence');
+    const dogDetectionTimestampRef = ref(rtdb, 'detectionStatus/dog/timestamp');
+
+    // Bowl weight listeners
+    const catWeightRef = ref(rtdb, 'petfeeder/cat/bowlWeight/weight');
+    const catUnitRef = ref(rtdb, 'petfeeder/cat/bowlWeight/unit');
+    const catWeightTimestampRef = ref(rtdb, 'petfeeder/cat/bowlWeight/timestamp');
+    
+    const dogWeightRef = ref(rtdb, 'petfeeder/dog/bowlWeight/weight');
+    const dogUnitRef = ref(rtdb, 'petfeeder/dog/bowlWeight/unit');
+    const dogWeightTimestampRef = ref(rtdb, 'petfeeder/dog/bowlWeight/timestamp');
+
     const tempListener = onValue(tempRef, (snapshot) => {
       const temp = snapshot.val();
-      console.log("Temperature update:", temp);
       setRealTimeData(prev => ({
         ...prev,
         temperature: temp
@@ -35,7 +79,6 @@ export default function Dashboard() {
 
     const humidityListener = onValue(humidityRef, (snapshot) => {
       const humidity = snapshot.val();
-      console.log("Humidity update:", humidity);
       setRealTimeData(prev => ({
         ...prev,
         humidity: humidity
@@ -46,7 +89,6 @@ export default function Dashboard() {
 
     const timestampListener = onValue(timestampRef, (snapshot) => {
       const timestamp = snapshot.val();
-      console.log("Timestamp update:", timestamp);
       setRealTimeData(prev => ({
         ...prev,
         timestamp: timestamp
@@ -55,11 +97,123 @@ export default function Dashboard() {
       console.error("Error reading timestamp:", error);
     });
 
+    // Pet detection listeners
+    const catDetectedListener = onValue(catDetectedRef, (snapshot) => {
+      const detected = snapshot.val();
+      setPetDetection(prev => ({
+        ...prev,
+        cat: { ...prev.cat, detected }
+      }));
+    });
+
+    const catConfidenceListener = onValue(catConfidenceRef, (snapshot) => {
+      const confidence = snapshot.val();
+      setPetDetection(prev => ({
+        ...prev,
+        cat: { ...prev.cat, confidence }
+      }));
+    });
+
+    const catDetectionTimestampListener = onValue(catDetectionTimestampRef, (snapshot) => {
+      const timestamp = snapshot.val();
+      setPetDetection(prev => ({
+        ...prev,
+        cat: { ...prev.cat, timestamp }
+      }));
+    });
+
+    const dogDetectedListener = onValue(dogDetectedRef, (snapshot) => {
+      const detected = snapshot.val();
+      setPetDetection(prev => ({
+        ...prev,
+        dog: { ...prev.dog, detected }
+      }));
+    });
+
+    const dogConfidenceListener = onValue(dogConfidenceRef, (snapshot) => {
+      const confidence = snapshot.val();
+      setPetDetection(prev => ({
+        ...prev,
+        dog: { ...prev.dog, confidence }
+      }));
+    });
+
+    const dogDetectionTimestampListener = onValue(dogDetectionTimestampRef, (snapshot) => {
+      const timestamp = snapshot.val();
+      setPetDetection(prev => ({
+        ...prev,
+        dog: { ...prev.dog, timestamp }
+      }));
+    });
+
+    // Bowl weight listeners
+    const catWeightListener = onValue(catWeightRef, (snapshot) => {
+      const weight = snapshot.val();
+      setBowlWeight(prev => ({
+        ...prev,
+        cat: { ...prev.cat, weight }
+      }));
+    });
+
+    const catUnitListener = onValue(catUnitRef, (snapshot) => {
+      const unit = snapshot.val();
+      setBowlWeight(prev => ({
+        ...prev,
+        cat: { ...prev.cat, unit }
+      }));
+    });
+
+    const catWeightTimestampListener = onValue(catWeightTimestampRef, (snapshot) => {
+      const timestamp = snapshot.val();
+      setBowlWeight(prev => ({
+        ...prev,
+        cat: { ...prev.cat, timestamp }
+      }));
+    });
+
+    const dogWeightListener = onValue(dogWeightRef, (snapshot) => {
+      const weight = snapshot.val();
+      setBowlWeight(prev => ({
+        ...prev,
+        dog: { ...prev.dog, weight }
+      }));
+    });
+
+    const dogUnitListener = onValue(dogUnitRef, (snapshot) => {
+      const unit = snapshot.val();
+      setBowlWeight(prev => ({
+        ...prev,
+        dog: { ...prev.dog, unit }
+      }));
+    });
+
+    const dogWeightTimestampListener = onValue(dogWeightTimestampRef, (snapshot) => {
+      const timestamp = snapshot.val();
+      setBowlWeight(prev => ({
+        ...prev,
+        dog: { ...prev.dog, timestamp }
+      }));
+    });
+
     // Cleanup listeners on unmount
     return () => {
       off(tempRef, 'value', tempListener);
       off(humidityRef, 'value', humidityListener);
       off(timestampRef, 'value', timestampListener);
+      
+      off(catDetectedRef, 'value', catDetectedListener);
+      off(catConfidenceRef, 'value', catConfidenceListener);
+      off(catDetectionTimestampRef, 'value', catDetectionTimestampListener);
+      off(dogDetectedRef, 'value', dogDetectedListener);
+      off(dogConfidenceRef, 'value', dogConfidenceListener);
+      off(dogDetectionTimestampRef, 'value', dogDetectionTimestampListener);
+      
+      off(catWeightRef, 'value', catWeightListener);
+      off(catUnitRef, 'value', catUnitListener);
+      off(catWeightTimestampRef, 'value', catWeightTimestampListener);
+      off(dogWeightRef, 'value', dogWeightListener);
+      off(dogUnitRef, 'value', dogUnitListener);
+      off(dogWeightTimestampRef, 'value', dogWeightTimestampListener);
     };
   }, []);
 
@@ -75,7 +229,6 @@ export default function Dashboard() {
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "N/A";
     try {
-      // Handle both string timestamps and numeric timestamps
       const date = typeof timestamp === 'number' 
         ? new Date(timestamp) 
         : new Date(timestamp);
@@ -89,6 +242,21 @@ export default function Dashboard() {
       console.error("Error formatting timestamp:", error);
       return "Invalid timestamp";
     }
+  };
+
+  const getDetectionStatus = (detected) => {
+    if (detected === null) return "No data";
+    return detected ? "🟢 Detected" : "🔴 Not detected";
+  };
+
+  const getConfidenceDisplay = (confidence) => {
+    if (confidence === null) return "N/A";
+    return `${confidence}%`;
+  };
+
+  const getWeightDisplay = (weight, unit) => {
+    if (weight === null || unit === null) return "No data";
+    return `${weight} ${unit || 'g'}`;
   };
 
   return (
@@ -181,6 +349,66 @@ export default function Dashboard() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Pet Detection Section */}
+        <div className="environment-section">
+          <h2>Pet Detection</h2>
+          <div className="environment-cards">
+            <div className="env-card cat-detection-card">
+              <div className="env-icon">🐱</div>
+              <div className="env-info">
+                <h3>Cat Detection</h3>
+                <p className="env-value">
+                  {getDetectionStatus(petDetection.cat.detected)}
+                </p>
+                <span className="env-label">
+                  Confidence: {getConfidenceDisplay(petDetection.cat.confidence)}
+                </span>
+              </div>
+            </div>
+
+            <div className="env-card dog-detection-card">
+              <div className="env-icon">🐶</div>
+              <div className="env-info">
+                <h3>Dog Detection</h3>
+                <p className="env-value">
+                  {getDetectionStatus(petDetection.dog.detected)}
+                </p>
+                <span className="env-label">
+                  Confidence: {getConfidenceDisplay(petDetection.dog.confidence)}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Food Bowl Status */}
+        <div className="environment-section">
+          <h2>Food Bowl Status</h2>
+          <div className="environment-cards">
+            <div className="env-card cat-bowl-card">
+              <div className="env-icon">🍽️</div>
+              <div className="env-info">
+                <h3>Cat Bowl</h3>
+                <p className="env-value">
+                  {getWeightDisplay(bowlWeight.cat.weight, bowlWeight.cat.unit)}
+                </p>
+                <span className="env-label">Current food weight</span>
+              </div>
+            </div>
+
+            <div className="env-card dog-bowl-card">
+              <div className="env-icon">🍽️</div>
+              <div className="env-info">
+                <h3>Dog Bowl</h3>
+                <p className="env-value">
+                  {getWeightDisplay(bowlWeight.dog.weight, bowlWeight.dog.unit)}
+                </p>
+                <span className="env-label">Current food weight</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Quick Actions */}

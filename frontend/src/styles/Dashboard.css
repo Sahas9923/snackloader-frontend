@@ -252,6 +252,22 @@
   border-left: 4px solid #ed8936;
 }
 
+.cat-detection-card {
+  border-left: 4px solid #ed8936;
+}
+
+.dog-detection-card {
+  border-left: 4px solid #3182ce;
+}
+
+.cat-bowl-card {
+  border-left: 4px solid #805ad5;
+}
+
+.dog-bowl-card {
+  border-left: 4px solid #38a169;
+}
+
 /* Quick Actions */
 .quick-actions {
   background: rgba(255, 255, 255, 0.95);
