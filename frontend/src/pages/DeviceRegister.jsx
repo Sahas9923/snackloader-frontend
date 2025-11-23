@@ -7,21 +7,13 @@ export default function DeviceRegister() {
 
   const register = async () => {
     const token = await auth.currentUser.getIdToken();
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/device/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        deviceId,
-        ownerId: auth.currentUser.uid,
-        ownerEmail: auth.currentUser.email
-      })
+    const r = await fetch(`${process.env.REACT_APP_BACKEND_URL}/device/status`, {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    const data = await res.json();
-    alert(JSON.stringify(data));
-  };
+    setDevice(await r.json());
+  }
+
+  if (!device) return <div>Loading...</div>;
 
   return (
     <div className="device-register-container">
