@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { auth } from "../services/firebase";
+import { auth, db } from "../services/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import "../styles/FeederSettings.css";
 
 export default function FeederSettings() {
@@ -12,20 +13,31 @@ export default function FeederSettings() {
   const [newDogTime, setNewDogTime] = useState("");
   const [newDogAmount, setNewDogAmount] = useState("");
   const [autoFeedEnabled, setAutoFeedEnabled] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const load = useCallback(async () => {
     try {
-      const token = await auth.currentUser.getIdToken();
-      const r = await fetch(`${process.env.REACT_APP_BACKEND_URL}/feeder/settings`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await r.json();
-      setCatSchedule(data.cat?.schedule || []);
-      setDogSchedule(data.dog?.schedule || []);
-      setAutoFeedEnabled(data.autoFeedEnabled ?? true);
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const settingsRef = doc(db, "feederSettings", user.uid);
+      const settingsSnap = await getDoc(settingsRef);
+
+      if (settingsSnap.exists()) {
+        const data = settingsSnap.data();
+        setCatSchedule(data.cat?.schedule || []);
+        setDogSchedule(data.dog?.schedule || []);
+        setAutoFeedEnabled(data.autoFeedEnabled ?? true);
+      } else {
+        // Initialize with default values if no settings exist
+        setCatSchedule([]);
+        setDogSchedule([]);
+        setAutoFeedEnabled(true);
+      }
     } catch (error) {
       console.error("Error loading settings:", error);
+      alert("Error loading settings");
     }
   }, []);
 
@@ -35,20 +47,35 @@ export default function FeederSettings() {
 
   async function save() {
     try {
-      const token = await auth.currentUser.getIdToken();
-      await fetch(`${process.env.REACT_APP_BACKEND_URL}/feeder/settings`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          cat: { schedule: catSchedule },
-          dog: { schedule: dogSchedule },
-          autoFeedEnabled
-        })
-      });
-      alert("Settings saved successfully!");
+      setLoading(true);
+      const user = auth.currentUser;
+      if (!user) {
+        alert("You must be logged in to save settings");
+        return;
+      }
+
+      const settingsRef = doc(db, "feederSettings", user.uid);
+      
+      // Prepare the data structure for Firestore
+      const settingsData = {
+        cat: {
+          schedule: catSchedule
+        },
+        dog: {
+          schedule: dogSchedule
+        },
+        autoFeedEnabled,
+        lastUpdated: serverTimestamp(),
+        userId: user.uid
+      };
+
+      await setDoc(settingsRef, settingsData, { merge: true });
+      alert("Settings saved successfully to Firestore!");
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Error saving settings");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -66,6 +93,26 @@ export default function FeederSettings() {
       setCatSchedule(catSchedule.filter((_, i) => i !== index));
     } else {
       setDogSchedule(dogSchedule.filter((_, i) => i !== index));
+    }
+  };
+
+  const addScheduleItem = (pet, time, amount) => {
+    if (!time || !amount) return;
+
+    const newScheduleItem = { 
+      time, 
+      amount: Number(amount),
+      id: Date.now() // Add unique ID for better tracking
+    };
+
+    if (pet === 'cat') {
+      setCatSchedule(prev => [...prev, newScheduleItem]);
+      setNewCatTime("");
+      setNewCatAmount("");
+    } else {
+      setDogSchedule(prev => [...prev, newScheduleItem]);
+      setNewDogTime("");
+      setNewDogAmount("");
     }
   };
 
@@ -96,8 +143,12 @@ export default function FeederSettings() {
             <p>Configure automatic feeding schedules for your pets</p>
           </div>
           <div className="header-actions">
-            <button onClick={save} className="save-settings-btn">
-              💾 Save Settings
+            <button 
+              onClick={save} 
+              className="save-settings-btn"
+              disabled={loading}
+            >
+              {loading ? "💾 Saving..." : "💾 Save Settings"}
             </button>
           </div>
         </div>
@@ -113,10 +164,11 @@ export default function FeederSettings() {
               {catSchedule.length === 0 ? (
                 <div className="empty-schedule">
                   <p>No feeding times scheduled</p>
+                  <small>Add feeding times below</small>
                 </div>
               ) : (
                 catSchedule.map((s, i) => (
-                  <div key={i} className="schedule-item">
+                  <div key={s.id || i} className="schedule-item">
                     <div className="schedule-info">
                       <span className="schedule-time">{s.time}</span>
                       <span className="schedule-amount">{s.amount}g</span>
@@ -124,6 +176,7 @@ export default function FeederSettings() {
                     <button 
                       className="remove-btn"
                       onClick={() => removeScheduleItem('cat', i)}
+                      title="Remove schedule"
                     >
                       ×
                     </button>
@@ -145,16 +198,11 @@ export default function FeederSettings() {
                 value={newCatAmount} 
                 onChange={e => setNewCatAmount(e.target.value)} 
                 min="1"
+                max="200"
               />
               <button 
                 className="add-schedule-btn"
-                onClick={() => { 
-                  if (newCatTime && newCatAmount) {
-                    setCatSchedule([...catSchedule, { time: newCatTime, amount: Number(newCatAmount) }]); 
-                    setNewCatTime(""); 
-                    setNewCatAmount(""); 
-                  }
-                }}
+                onClick={() => addScheduleItem('cat', newCatTime, newCatAmount)}
                 disabled={!newCatTime || !newCatAmount}
               >
                 Add Time
@@ -172,10 +220,11 @@ export default function FeederSettings() {
               {dogSchedule.length === 0 ? (
                 <div className="empty-schedule">
                   <p>No feeding times scheduled</p>
+                  <small>Add feeding times below</small>
                 </div>
               ) : (
                 dogSchedule.map((s, i) => (
-                  <div key={i} className="schedule-item">
+                  <div key={s.id || i} className="schedule-item">
                     <div className="schedule-info">
                       <span className="schedule-time">{s.time}</span>
                       <span className="schedule-amount">{s.amount}g</span>
@@ -183,6 +232,7 @@ export default function FeederSettings() {
                     <button 
                       className="remove-btn"
                       onClick={() => removeScheduleItem('dog', i)}
+                      title="Remove schedule"
                     >
                       ×
                     </button>
@@ -204,16 +254,11 @@ export default function FeederSettings() {
                 value={newDogAmount} 
                 onChange={e => setNewDogAmount(e.target.value)} 
                 min="1"
+                max="500"
               />
               <button 
                 className="add-schedule-btn"
-                onClick={() => { 
-                  if (newDogTime && newDogAmount) {
-                    setDogSchedule([...dogSchedule, { time: newDogTime, amount: Number(newDogAmount) }]); 
-                    setNewDogTime(""); 
-                    setNewDogAmount(""); 
-                  }
-                }}
+                onClick={() => addScheduleItem('dog', newDogTime, newDogAmount)}
                 disabled={!newDogTime || !newDogAmount}
               >
                 Add Time
@@ -240,7 +285,32 @@ export default function FeederSettings() {
               <div className="toggle-info">
                 <h4>Automatic Feeding</h4>
                 <p>Enable scheduled feeding times for your pets</p>
+                <small className="toggle-hint">
+                  {autoFeedEnabled ? 
+                    "Scheduled feeding is active" : 
+                    "Scheduled feeding is disabled"
+                  }
+                </small>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Info Section */}
+        <div className="info-section">
+          <h3>💡 How it works</h3>
+          <div className="info-grid">
+            <div className="info-card">
+              <h4>Schedule Format</h4>
+              <p>Times are in 24-hour format. The feeder will automatically dispense food at scheduled times.</p>
+            </div>
+            <div className="info-card">
+              <h4>Multiple Schedules</h4>
+              <p>You can add multiple feeding times per day for each pet. Empty schedules are fine.</p>
+            </div>
+            <div className="info-card">
+              <h4>Auto Feed Toggle</h4>
+              <p>When disabled, scheduled feeding will be paused but manual feeding still works.</p>
             </div>
           </div>
         </div>
