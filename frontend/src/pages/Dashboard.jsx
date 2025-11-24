@@ -269,8 +269,8 @@ export default function Dashboard() {
         </div>
         <div className="nav-links">
           <Link to="/dashboard" className="nav-link active">Dashboard</Link>
-          <Link to="/manualFeed" className="nav-link">Manual Feed</Link>
-          <Link to="/feederSetting" className="nav-link">Feeder Settings</Link>
+          <Link to="/manualFeed" className="nav-link">Feed Your Pet</Link>
+          <Link to="/feederSetting" className="nav-link">Schedule Feeder</Link>
         </div>
         <div className="nav-user">
           <span className="user-email">{auth.currentUser?.email}</span>
@@ -428,10 +428,10 @@ export default function Dashboard() {
           <h2>Quick Actions</h2>
           <div className="action-buttons">
             <Link to="/manualFeed" className="action-btn primary">
-              🍖 Manual Feed
+              🍖 Feed Your Pet
             </Link>
             <Link to="/feederSetting" className="action-btn secondary">
-              ⚙️ Feeder Settings
+              ⚙️ Scedule Feeder
             </Link>
             <div className="action-btn secondary coming-soon">
               📷 Live Camera

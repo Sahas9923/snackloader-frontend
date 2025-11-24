@@ -252,8 +252,8 @@ export default function ManualFeed() {
 
         <div className="nav-links">
           <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/manualFeed" className="nav-link active">Manual Feed</Link>
-          <Link to="/feederSetting" className="nav-link">Feeder Settings</Link>
+          <Link to="/manualFeed" className="nav-link active">Feed Your Pet</Link>
+          <Link to="/feederSetting" className="nav-link">Schedule Feeder</Link>
         </div>
 
         <div className="nav-user">
@@ -267,26 +267,8 @@ export default function ManualFeed() {
         <div className="feed-header">
 
           <div className="header-content">
-            <h1>Manual Feed 🍽️</h1>
-            <p>Manually dispense food for your pets</p>
-          </div>
-
-          <div className="env-summary">
-            <strong>Environment</strong><br />
-            🌡 Temp: {temperature ?? "--"}°C<br />
-            💧 Humidity: {humidity ?? "--"}%<br />
-            🔥 THI: {formatTHI()}<br />
-
-            <label className="adapt-switch">
-              <input
-                type="checkbox"
-                checked={tempAdapt}
-                onChange={(e) =>
-                  set(ref(rtdb, "settings/tempAdapt"), e.target.checked)
-                }
-              />
-              Adaptation {tempAdapt ? "ON" : "OFF"}
-            </label>
+            <h1>Feed Your Pet 🍽️</h1>
+            <p>Dispense food for your pets</p>
           </div>
 
         </div>
@@ -377,6 +359,84 @@ export default function ManualFeed() {
             </div>
           </div>
 
+         {/* THI INFO CARD */}
+         <div className="thi-info-card">
+
+            {/* Header + Toggle */}
+            <div className="thi-header">
+
+              <h3>
+                Weather-Based Feeding (Sri Lanka)
+              </h3>
+
+              {/* Right block: toggle + label under it */}
+              <div className="toggle-container">
+
+              {/* ROW 1 → toggle button */}
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={tempAdapt}
+                  onChange={(e) =>
+                    set(ref(rtdb, "settings/tempAdapt"), e.target.checked)
+                  }
+                />
+                <span className="slider"></span>
+              </label>
+
+              {/* ROW 2 → Enable + Status */}
+              <div className="toggle-row2">
+                <span className="status"><strong>{tempAdapt ? "ON" : "OFF"}</strong></span>
+              </div>
+
+            </div>
+
+            </div>
+
+            {/* Environment Summary */}
+            <div className="env-summary">
+              🌡 Temp: {temperature ?? "--"}°C 
+              💧 Humidity: {humidity ?? "--"}%
+              🔥 THI: {formatTHI()}
+            </div>
+
+            <p className="thi-note">
+              These guidelines explain how temperature & humidity affect pet appetite.
+              Your automatic adaptation toggle uses these conditions.
+            </p>
+
+            {/* Table */}
+            <div className="thi-table">
+
+              <div className="thi-row cool">
+                <span>Comfortable (THI &lt; 70)</span>
+                <span>➕ Increase feed by 10%</span>
+              </div>
+
+              <div className="thi-row normal">
+                <span>Normal (THI 70–75)</span>
+                <span>✔ Normal feeding</span>
+              </div>
+
+              <div className="thi-row warm">
+                <span>Warm (THI 75–80)</span>
+                <span>➖ Reduce feed by 10%</span>
+              </div>
+
+              <div className="thi-row hot">
+                <span>Hot (THI 80–85)</span>
+                <span>⚠ Reduce feed by 20%</span>
+              </div>
+
+              <div className="thi-row danger">
+                <span>Danger (THI &gt; 85)</span>
+                <span>⛔ STOP feeding</span>
+              </div>
+
+            </div>
+          </div>
+
+
         </div>
 
         {/* QUICK TIPS */}
@@ -398,45 +458,6 @@ export default function ManualFeed() {
             <div className="tip-card">
               <h4>Feeding Frequency</h4>
               <p>Most pets eat 2 times per day.</p>
-            </div>
-
-          </div>
-        </div>
-
-        {/* THI INFO CARD */}
-        <div className="thi-info-card">
-          <h3>🌡 Weather-Based Feeding Guide (Sri Lanka)</h3>
-
-          <p className="thi-note">
-            These guidelines explain how temperature & humidity affect pet appetite.
-            Your automatic adaptation toggle uses these conditions.
-          </p>
-
-          <div className="thi-table">
-
-            <div className="thi-row cool">
-              <span>Comfortable (THI &lt; 70)</span>
-              <span>➕ Increase feed by 10%</span>
-            </div>
-
-            <div className="thi-row normal">
-              <span>Normal (THI 70–75)</span>
-              <span>✔ Normal feeding</span>
-            </div>
-
-            <div className="thi-row warm">
-              <span>Warm (THI 75–80)</span>
-              <span>➖ Reduce feed by 10%</span>
-            </div>
-
-            <div className="thi-row hot">
-              <span>Hot (THI 80–85)</span>
-              <span>⚠ Reduce feed by 20%</span>
-            </div>
-
-            <div className="thi-row danger">
-              <span>Danger (THI &gt; 85)</span>
-              <span>⛔ STOP feeding</span>
             </div>
 
           </div>

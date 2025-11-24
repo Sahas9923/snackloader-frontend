@@ -126,8 +126,8 @@ export default function FeederSettings() {
         </div>
         <div className="nav-links">
           <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/manualFeed" className="nav-link">Manual Feed</Link>
-          <Link to="/feederSetting" className="nav-link active">Feeder Settings</Link>
+          <Link to="/manualFeed" className="nav-link">Feed Your Pet</Link>
+          <Link to="/feederSetting" className="nav-link active">Schedule Feeder</Link>
         </div>
         <div className="nav-user">
           <span className="user-email">{auth.currentUser?.email}</span>
@@ -139,7 +139,7 @@ export default function FeederSettings() {
       <div className="settings-content">
         <div className="settings-header">
           <div className="header-content">
-            <h1>Feeder Settings</h1>
+            <h1>Schedule Feeder</h1>
             <p>Configure automatic feeding schedules for your pets</p>
           </div>
           <div className="header-actions">
