@@ -146,6 +146,16 @@ The project demonstrates **end-to-end system integration**, from physical hardwa
 
 ---
 
+## 🚀 How to Run
+
+```bash
+# Frontend
+cd frontend
+npm install
+npm start
+
+---
+
 ## 📜 License
 
 This project is released for **educational and research purposes**.
